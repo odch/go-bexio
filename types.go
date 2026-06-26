@@ -13,36 +13,43 @@ func (ve ValidationError) Error() string {
 	return ve.Message + err
 }
 
+// Contact uses omitempty throughout so a create (POST /2.0/contact) only sends
+// the fields that are actually set — Bexio rejects unset/read-only fields such
+// as id, salutation_id or updated_at if they are present. omitempty does not
+// affect decoding, so reads (ListContacts) still populate every field.
 type Contact struct {
-	Id                 int64  `json:"id"`
+	Id                 int64  `json:"id,omitempty"`
 	Contact_type_id    int    `json:"contact_type_id,omitempty"`
-	Nr                 string `json:"nr"`
-	Name_1             string `json:"name_1"`
-	Name_2             string `json:"name_2"`
-	Salutation_id      int    `json:"salutation_id"`
-	Salutation_form    int    `json:"salutation_form"`
-	Title_id           int    `json:"title_id"`
-	Birthday           string `json:"birthday"`
-	Address            string `json:"address"`
-	Postcode           string `json:"postcode"`
-	City               string `json:"city"`
-	Country_id         int    `json:"country_id"`
-	Mail               string `json:"mail"`
-	Mail_second        string `json:"mail_second"`
-	Phone_fixed        string `json:"phone_fixed"`
-	Phone_fixed_second string `json:"phone_fixed_second"`
-	Phone_mobile       string `json:"phone_mobile"`
-	Fax                string `json:"fax"`
-	Url                string `json:"url"`
-	Skype_name         string `json:"skype_name"`
-	Remarks            string `json:"remarks"`
-	Language_id        int    `json:"language_Id"`
-	Is_lead            bool   `json:"is_lead"`
-	Contact_group_ids  string `json:"contact_group_ids"`
-	Contact_branch_ids string `json:"contact_branch_ids"`
-	User_id            int    `json:"user_id"`
-	Owner_id           int    `json:"owner_id"`
-	Updated_at         string `json:"updated_at"`
+	Nr                 string `json:"nr,omitempty"`
+	Name_1             string `json:"name_1,omitempty"`
+	Name_2             string `json:"name_2,omitempty"`
+	Salutation_id      int    `json:"salutation_id,omitempty"`
+	Salutation_form    int    `json:"salutation_form,omitempty"`
+	Title_id           int    `json:"title_id,omitempty"`
+	Birthday           string `json:"birthday,omitempty"`
+	Address            string `json:"address,omitempty"` // deprecated: response-only
+	Street_name        string `json:"street_name,omitempty"`
+	House_number       string `json:"house_number,omitempty"`
+	Address_addition   string `json:"address_addition,omitempty"`
+	Postcode           string `json:"postcode,omitempty"`
+	City               string `json:"city,omitempty"`
+	Country_id         int    `json:"country_id,omitempty"`
+	Mail               string `json:"mail,omitempty"`
+	Mail_second        string `json:"mail_second,omitempty"`
+	Phone_fixed        string `json:"phone_fixed,omitempty"`
+	Phone_fixed_second string `json:"phone_fixed_second,omitempty"`
+	Phone_mobile       string `json:"phone_mobile,omitempty"`
+	Fax                string `json:"fax,omitempty"`
+	Url                string `json:"url,omitempty"`
+	Skype_name         string `json:"skype_name,omitempty"`
+	Remarks            string `json:"remarks,omitempty"`
+	Language_id        int    `json:"language_id,omitempty"`
+	Is_lead            bool   `json:"is_lead,omitempty"`
+	Contact_group_ids  string `json:"contact_group_ids,omitempty"`
+	Contact_branch_ids string `json:"contact_branch_ids,omitempty"`
+	User_id            int    `json:"user_id,omitempty"`
+	Owner_id           int    `json:"owner_id,omitempty"`
+	Updated_at         string `json:"updated_at,omitempty"`
 }
 
 type ContactGroup struct {
