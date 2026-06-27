@@ -60,6 +60,20 @@ func (c *InvoiceService) IssueInvoice(id int) error {
 	return err
 }
 
+// DeleteInvoice deletes an invoice. Bexio only permits deleting draft (not yet
+// issued) invoices, which is what the discard flow relies on.
+func (c *InvoiceService) DeleteInvoice(id int) error {
+	req, err := c.client.newRequest("DELETE", fmt.Sprintf("kb_invoice/%d", id), nil)
+	if err != nil {
+		return err
+	}
+	var result struct {
+		Success bool `json:"success"`
+	}
+	_, err = c.client.do(req, &result)
+	return err
+}
+
 // GetInvoicePDF fetches the rendered invoice PDF. Returns the metadata and the
 // decoded PDF bytes.
 func (c *InvoiceService) GetInvoicePDF(id int) (InvoicePdf, []byte, error) {
