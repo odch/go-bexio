@@ -53,6 +53,24 @@ func TestIssueInvoice(t *testing.T) {
 	}
 }
 
+func TestDeleteInvoice(t *testing.T) {
+	called := false
+	c := newTestClient(t, func(w http.ResponseWriter, r *http.Request) {
+		called = true
+		if r.Method != http.MethodDelete || r.URL.Path != "/kb_invoice/7" {
+			t.Errorf("unexpected request %s %s", r.Method, r.URL.Path)
+		}
+		_, _ = w.Write([]byte(`{"success":true}`))
+	})
+
+	if err := c.Invoices.DeleteInvoice(7); err != nil {
+		t.Fatalf("DeleteInvoice: %v", err)
+	}
+	if !called {
+		t.Error("delete endpoint not called")
+	}
+}
+
 func TestGetInvoicePDF(t *testing.T) {
 	want := []byte("%PDF-1.4 fake pdf bytes")
 	c := newTestClient(t, func(w http.ResponseWriter, r *http.Request) {
